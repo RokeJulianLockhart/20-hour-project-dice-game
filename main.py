@@ -35,8 +35,9 @@ def overwrite_password():
         global create_password_1
         create_username_1 = str(input('Player 1, enter your user: '))
         create_password_1 = str(input('Player 1, enter your password: '))
+        
 
-
+# https://github.com/rokejulianlockhart/20-hour-project-dice-game/issues/2
 while True:  # https://stackoverflow.com/a/20337522/9731176
     response = input('Do you wanţ to authenticate or overwrite the previous credentials? (authenticate/overwrite): ')
     if response == 'authenticate':

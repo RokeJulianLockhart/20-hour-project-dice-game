@@ -27,44 +27,92 @@ def dice_roll():  # the function generates 2 dice rolls and if they are equal ad
     return final_total  # returns the total
 
 
-FILENAME = 'logins.txt'
+filename_1 = 'player_1.txt'
+filename_2 = 'player_2.txt'
 
 # https://github.com/rokejulianlockhart/20-hour-project-dice-game/issues/2
 while True:  # https://stackoverflow.com/a/20337522/9731176
     os.system('cls' if os.name == 'nt' else 'clear')
     response = input('Do you wanţ to authenticate or overwrite the previous credentials? (authenticate/overwrite): ')
+    os.system('cls' if os.name == 'nt' else 'clear')
     if response == 'authenticate':
         try:
-            with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
-                verify_username_1 = str(input('Player 1, enter your user: '))
-                verify_password_1 = str(input('Player 1, enter your password: '))
-                break
+            mode = 'AUTHENTICATION'
+            print(mode + ' MODE')
+            with open(filename_1, 'r+', encoding='utf-8', errors='strict') as file:
+                player = 1
+                type_of_input = 'username'
+                verify_username_1 = str(input('Player ' + str(player) + ', enter your ' + type_of_input + ': '))
+                logging.warning(file.readline())
+                if verify_username_1 == str(file.readlines()[0]).strip():
+                    print('Correct username.')
+                else:
+                    print('Incorrect username.')
+                type_of_input = 'password'
+                verify_password_1 = str(input('Player ' +  str(player) + ', enter your ' + type_of_input + ': '))
+                logging.warning(file.readline(2))
+                if verify_password_1 == file.readlines()[1].strip():
+                    print('Correct password.')
+                else:
+                    print('Incorrect password.')
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(mode + ' MODE')
+                player = 2
+                type_of_input = 'username'
+                verify_username_2 = str(input('Player ' + player + ', enter your ' + type_of_input + ': '))
+                if verify_username_2 == file.readline(1):
+                    print('Correct username.')
+                else:
+                    print('Incorrect username.')
+                type_of_input = 'password'
+                verify_password_2 = str(input('Player ' + player + ', enter your ' + type_of_input + ': '))
+                if verify_password_2 == file.readline(2):
+                    print('Correct password.')
+                else:
+                    print('Incorrect password.')
+            break
         except ValueError:
             while True:
                 incorrect_encodement_response = input('Incorrect encodement. Overwrite? (y/n): ')
                 if incorrect_encodement_response == 'y':
-                    with open(FILENAME, 'w', encoding='utf-8', errors='strict') as file:
-                        create_username_1 = str(input('Player 1, enter your user: '))
-                        create_password_1 = str(input('Player 1, enter your password: '))
+                    print('REPLACEMENT MODE')
+                    create_username_1 = str(input('Player 1, enter your user: '))
+                    create_password_1 = str(input('Player 1, enter your password: '))
+                    with open(filename_1, 'w', encoding='utf-8', errors='strict') as file:
+                        file.write("username='" + create_username_1 + "'\n")
+                        file.write("password='" + create_password_1 + "'\n")
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print('REPLACEMENT MODE')
+                    create_username_2 = str(input('Player 2 enter your user: '))
+                    create_password_2 = str(input('Player 2 enter your password: '))
+                    with open(filename_2, 'w', encoding='utf-8', errors='strict') as file:
+                        file.write("username='" + create_username_2 + "'\n")
+                        file.write("password='" + create_password_2 + "'\n")
                     break
                 elif incorrect_encodement_response == 'n':
                     raise SystemExit(0) from ValueError
                 else:
                     break
     elif response == 'overwrite':
-        with open(FILENAME, 'w', encoding='utf-8', errors='strict') as file:
-            create_username_1 = str(input('Player 1, enter your user: '))
-            create_password_1 = str(input('Player 1, enter your password: '))
-            break
+        print('REPLACEMENT MODE')
+        create_username_1 = str(input('Player 1, enter your user: '))
+        create_password_1 = str(input('Player 1, enter your password: '))
+        with open(filename_1, 'w', encoding='utf-8', errors='strict') as file:
+            file.write("username='" + create_username_1 + "'\n")
+            file.write("password='" + create_password_1 + "'\n")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('REPLACEMENT MODE')
+        create_username_2 = str(input('Player 2 enter your user: '))
+        create_password_2 = str(input('Player 2 enter your password: '))
+        with open(filename_2, 'w', encoding='utf-8', errors='strict') as file:
+            file.write("username='" + create_username_2 + "'\n")
+            file.write("password='" + create_password_2 + "'\n")
+        break
     else:
         print('Invalid response.')
         input('Press any key to recommence authentication.')
 
-with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    verify_username_1 = str(input('Player 1, enter your user: '))
-    verify_password_1 = str(input('Player 1, enter your password: '))
+with open(filename_1, 'w+', encoding='utf-8', errors='strict') as file:
 
     end_of_file = False
     while not end_of_file:
@@ -80,11 +128,7 @@ with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
         if USERNAME == '':
             end_of_file = True
 
-    os.system('cls' if os.name == 'nt' else 'clear')
-    verify_username_2 = str(input('Player 2 enter your user: '))
-    verify_password_2 = str(input('Player 2 enter your password: '))
-
-    with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
+    with open(filename_1, 'w+', encoding='utf-8', errors='strict') as file:
 
         end_of_file = False
         while not end_of_file:

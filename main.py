@@ -1,5 +1,6 @@
 #!/usr/bin/env -S python3
 
+import logging
 import random
 import os
 
@@ -28,36 +29,36 @@ def dice_roll():  # the function generates 2 dice rolls and if they are equal ad
 
 FILENAME = 'logins.txt'
 
-
-def overwrite_password():
-    with open(FILENAME, 'w', encoding='utf-8', errors='strict') as file:
-        global create_username_1
-        global create_password_1
-        create_username_1 = str(input('Player 1, enter your user: '))
-        create_password_1 = str(input('Player 1, enter your password: '))
-        
-
 # https://github.com/rokejulianlockhart/20-hour-project-dice-game/issues/2
 while True:  # https://stackoverflow.com/a/20337522/9731176
+    os.system('cls' if os.name == 'nt' else 'clear')
     response = input('Do you wanţ to authenticate or overwrite the previous credentials? (authenticate/overwrite): ')
     if response == 'authenticate':
         try:
             with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
                 verify_username_1 = str(input('Player 1, enter your user: '))
                 verify_password_1 = str(input('Player 1, enter your password: '))
+                break
         except ValueError:
             while True:
                 incorrect_encodement_response = input('Incorrect encodement. Overwrite? (y/n): ')
                 if incorrect_encodement_response == 'y':
-                    overwrite_password()
+                    with open(FILENAME, 'w', encoding='utf-8', errors='strict') as file:
+                        create_username_1 = str(input('Player 1, enter your user: '))
+                        create_password_1 = str(input('Player 1, enter your password: '))
                     break
                 elif incorrect_encodement_response == 'n':
                     raise SystemExit(0) from ValueError
                 else:
                     break
     elif response == 'overwrite':
-        overwrite_password()
-    break
+        with open(FILENAME, 'w', encoding='utf-8', errors='strict') as file:
+            create_username_1 = str(input('Player 1, enter your user: '))
+            create_password_1 = str(input('Player 1, enter your password: '))
+            break
+    else:
+        print('Invalid response.')
+        input('Press any key to recommence authentication.')
 
 with open(FILENAME, 'w+', encoding='utf-8', errors='strict') as file:
     os.system('cls' if os.name == 'nt' else 'clear')
